@@ -29,7 +29,6 @@ public class PassengerDeserializer implements Deserializer<Passenger> {
             if(bytes != null){
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
                 passenger = objectMapper.readValue(new String(bytes, StandardCharsets.UTF_8), Passenger.class);
-                return null;
             }
 
         }catch (Exception e){

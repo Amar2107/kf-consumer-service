@@ -39,11 +39,11 @@ public class PassengerService {
 
             passengerKafkaTemplate.flush();
 
-            future.whenComplete(((stringPassengerSendResult, throwable) -> {
-                if (throwable == null)
+            future.whenComplete(((stringPassengerSendResult, ex) -> {
+                if (ex == null)
                     log.info("Message published successfully");
                 else
-                    log.error("Unable to send message ", throwable);
+                    log.error("Unable to send message ", ex);
             }));
         }catch (Exception e){
             log.error("Failed to send message ", e);

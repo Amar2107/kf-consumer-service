@@ -32,7 +32,7 @@ public class PassengerConsumerConfig {
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-        config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //ensures we start from 1st message only once
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         config.put(JsonDeserializer.VALUE_DEFAULT_TYPE,Passenger.class);
         return config;
@@ -48,9 +48,9 @@ public class PassengerConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<String, Passenger> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(config.getConsumerConcurrency());
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE); // offset is commited immediately as soon as ack is performed
         //factory.setRecordFilterStrategy();
-        factory.setAckDiscarded(true);
+        factory.setAckDiscarded(true); //discarded messages will increase offset
         return factory;
     }
 
