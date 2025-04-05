@@ -20,6 +20,7 @@ public class PassengerController {
     @PostMapping("/publishPassenger")
     public Object publishPassenger(@RequestBody Passenger passenger){
         return service.publishPassenger(passenger)?ResponseEntity.status(HttpStatus.OK): ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
 }
