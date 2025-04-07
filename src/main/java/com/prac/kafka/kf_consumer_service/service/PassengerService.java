@@ -1,6 +1,7 @@
 package com.prac.kafka.kf_consumer_service.service;
 
 
+import com.prac.kafka.kf_consumer_service.entity.KafkaWrapper;
 import com.prac.kafka.kf_consumer_service.entity.Passenger;
 import com.prac.kafka.kf_consumer_service.repo.PassengerRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,9 @@ public class PassengerService {
     @Autowired
     PassengerRepo repo;
 
+    @Autowired
+    BatchProcessor processor;
+
     public boolean publishPassenger(Passenger passenger){
 
         CompletableFuture<SendResult<String,Passenger>> future;
@@ -52,8 +56,13 @@ public class PassengerService {
     }
 
 
-    public void savePassenger(Passenger passenger){
-        repo.savePassenger(passenger).subscribe();
+    public void savePassenger(KafkaWrapper wrapper){
+        repo.savePassenger(wrapper).subscribe();
+    }
+
+
+    public void savePassengerInBatches(KafkaWrapper wrapper){
+        processor.process(wrapper);
     }
 
 
